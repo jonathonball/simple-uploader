@@ -58,4 +58,5 @@ typings/
 .env
 
 client_secret.json
-
+credentials.json
+config.json
