@@ -60,3 +60,5 @@ typings/
 client_secret.json
 credentials.json
 config.json
+
+data/
