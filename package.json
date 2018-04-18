@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/jonathonball/simple-uploader#readme",
   "dependencies": {
-    "googleapis": "^27.0.0"
+    "googleapis": "^27.0.0",
+    "image-downloader": "^3.3.0",
+    "node-mkdirp": "0.0.1"
   }
 }
