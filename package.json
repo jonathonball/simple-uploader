@@ -1,0 +1,22 @@
+{
+  "name": "simple-uploader",
+  "version": "1.0.0",
+  "description": "Simple file uploader",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathonball/simple-uploader.git"
+  },
+  "author": "Jonathon Ball",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jonathonball/simple-uploader/issues"
+  },
+  "homepage": "https://github.com/jonathonball/simple-uploader#readme",
+  "dependencies": {
+    "googleapis": "^27.0.0"
+  }
+}
