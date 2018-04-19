@@ -9,32 +9,14 @@ app.readCameraImage().then((filename) => {
     fs.readFile('client_secret.json', (err, client_secret_content) => {
         if (err) return console.log('Error loading client secret file:', err);
         let client_secret = JSON.parse(client_secret_content);
-        authorize(client_secret, createImageOnDrive);
-    });
-});
 
-/**
- * Lists the names and IDs of up to 10 files.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
- */
-function listFiles(auth) {
-    const drive = google.drive({ version: 'v3', auth });
-    drive.files.list({
-        pageSize: 10,
-        fields: 'nextPageToken, files(id, name)',
-    }, (err, {data}) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const files = data.files;
-        if (files.length) {
-            console.log('Files:');
-            files.map((file) => {
-                console.log(`${file.name} (${file.id})`);
-            });
+        if (app.config.drive_file_id) {
+            authorize(client_secret, updateImageOnDrive);
         } else {
-          console.log('No files found.');
+            authorize(client_secret, createImageOnDrive);
         }
     });
-}
+});
 
 function createImageOnDrive(auth) {
     const drive = google.drive({ version: 'v3', auth });
@@ -52,12 +34,15 @@ function createImageOnDrive(auth) {
     });
 }
 
-function getImageFromDrive(auth, fileId) {
+function updateImageOnDrive(auth) {
     const drive = google.drive({ version: 'v3', auth });
-    drive.files.get({
-        fileId: fileId
-    }, (err, {data}) => {
-        if (err) return console.log('Error' + err);
-        console.log(data);
+    drive.files.update({
+        fileId: app.config.drive_file_id,
+        media: {
+            mimeType: 'image/jpeg',
+            body: fs.createReadStream(app.fullImagePath)
+        }
+    }, (err, rawResponse) => {
+        if (err) return console.log(err);
     });
 }
