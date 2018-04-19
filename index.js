@@ -6,13 +6,10 @@ const Initialization = require('./lib/initialization.js');
 init = new Initialization();
 init.readCameraImage().then((filename) => {
     // Load client secrets from a local file.
-    fs.readFile('client_secret.json', (err, content) => {
-      if (err) return console.log('Error loading client secret file:', err);
-      // Authorize a client with credentials, then call the Google Drive API.
-      //authorize(JSON.parse(content), createImageOnDrive);
-      //if (init.config.image_file_name === null) {
-          authorize(JSON.parse(content), createImageOnDrive);
-      //}
+    fs.readFile('client_secret.json', (err, client_secret_content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        let client_secret = JSON.parse(client_secret_content);
+        authorize(client_secret, createImageOnDrive);
     });
 });
 
@@ -55,10 +52,10 @@ function createImageOnDrive(auth) {
     });
 }
 
-function getImageFromDrive(auth) {
+function getImageFromDrive(auth, fileId) {
     const drive = google.drive({ version: 'v3', auth });
     drive.files.get({
-        
+        fileId: fileId
     }, (err, {data}) => {
         if (err) return console.log('Error' + err);
         console.log(data);
