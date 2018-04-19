@@ -1,10 +1,10 @@
 const fs = require('fs');
 const {google} = require('googleapis');
-const authorize = require('./lib/quickstart.js');
-const Initialization = require('./lib/initialization.js');
+const authorize = require('./lib/google.js');
+const SimpleUploader = require('./lib/simpleuploader.js');
 
-init = new Initialization();
-init.readCameraImage().then((filename) => {
+app = new SimpleUploader();
+app.readCameraImage().then((filename) => {
     // Load client secrets from a local file.
     fs.readFile('client_secret.json', (err, client_secret_content) => {
         if (err) return console.log('Error loading client secret file:', err);
@@ -39,16 +39,16 @@ function listFiles(auth) {
 function createImageOnDrive(auth) {
     const drive = google.drive({ version: 'v3', auth });
     drive.files.create({
-        resource: { 'name': init.config.image_file_name },
+        resource: { 'name': app.config.image_file_name },
         media: {
             mimeType: 'image/jpeg',
-            body: fs.createReadStream(init.fullImagePath),
+            body: fs.createReadStream(app.fullImagePath),
             fields: 'id'
         }
     }, (err, file) => {
         if (err) return console.log(err);
-        init.config.drive_file_id = file.data.id;
-        init.saveConfig();
+        app.config.drive_file_id = file.data.id;
+        app.saveConfig();
     });
 }
 
