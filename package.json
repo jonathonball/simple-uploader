@@ -1,6 +1,6 @@
 {
   "name": "simple-uploader",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Simple file uploader",
   "main": "index.js",
   "scripts": {
