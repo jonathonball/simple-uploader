@@ -4,8 +4,9 @@ const authorize = require('./lib/google.js');
 const SimpleUploader = require('./lib/simpleuploader.js');
 
 app = new SimpleUploader();
+console.log("Updating image every " + app.config.interval + " milliseconds.");
 runApp();
-setInterval(runApp, 60000);
+setInterval(runApp, app.config.interval);
 
 function runApp() {
     app.readCameraImage().then((filename) => {
