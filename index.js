@@ -4,19 +4,21 @@ const authorize = require('./lib/google.js');
 const SimpleUploader = require('./lib/simpleuploader.js');
 
 app = new SimpleUploader();
-app.readCameraImage().then((filename) => {
-    // Load client secrets from a local file.
-    fs.readFile('client_secret.json', (err, client_secret_content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        let client_secret = JSON.parse(client_secret_content);
+setInterval(() => {
+    app.readCameraImage().then((filename) => {
+        // Load client secrets from a local file.
+        fs.readFile('client_secret.json', (err, client_secret_content) => {
+            if (err) return console.log('Error loading client secret file:', err);
+            let client_secret = JSON.parse(client_secret_content);
 
-        if (app.config.drive_file_id) {
-            authorize(client_secret, updateImageOnDrive);
-        } else {
-            authorize(client_secret, createImageOnDrive);
-        }
+            if (app.config.drive_file_id) {
+                authorize(client_secret, updateImageOnDrive);
+            } else {
+                authorize(client_secret, createImageOnDrive);
+            }
+        });
     });
-});
+}, 60000);
 
 function createImageOnDrive(auth) {
     const drive = google.drive({ version: 'v3', auth });
