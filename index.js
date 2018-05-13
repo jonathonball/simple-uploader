@@ -4,7 +4,10 @@ const authorize = require('./lib/google.js');
 const SimpleUploader = require('./lib/simpleuploader.js');
 
 app = new SimpleUploader();
-setInterval(() => {
+runApp();
+setInterval(runApp, 60000);
+
+function runApp() {
     app.readCameraImage().then((filename) => {
         // Load client secrets from a local file.
         fs.readFile('client_secret.json', (err, client_secret_content) => {
@@ -18,7 +21,7 @@ setInterval(() => {
             }
         });
     });
-}, 60000);
+}
 
 function createImageOnDrive(auth) {
     const drive = google.drive({ version: 'v3', auth });
@@ -30,7 +33,10 @@ function createImageOnDrive(auth) {
             fields: 'id'
         }
     }, (err, file) => {
-        if (err) return console.log(err);
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
         app.config.drive_file_id = file.data.id;
         app.saveConfig();
     });
@@ -45,6 +51,10 @@ function updateImageOnDrive(auth) {
             body: fs.createReadStream(app.fullImagePath)
         }
     }, (err, rawResponse) => {
-        if (err) return console.log(err);
+        if (err) {
+            console.error(err);
+            process.exit(1);
+        }
+        console.log('Image updated');
     });
 }
