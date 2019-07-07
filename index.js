@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 const fs = require('fs');
 const {google} = require('googleapis');
 const authorize = require('./lib/google.js');
